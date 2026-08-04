@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="India Space Lab - CanSat & CubeSat Single-Page Ground Control Software (GCS) Dashboard">
-  <title>CanSat Ground Control Software (GCS) - India Space Lab</title>
-  
-  <!-- CSS & Fonts -->
+  <meta name="description" content="India Space Lab - CanSat Ground Control Software Operator Dashboard">
+  <title>CanSat Ground Control Software - India Space Lab</title>
+
+  <!-- Styling -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  
-  <!-- External Libraries (CDN) -->
+
+  <!-- Core Third-Party Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -18,19 +18,19 @@
 </head>
 <body>
 
-  <!-- ================= TOP CONTROL BAR ================= -->
+  <!-- TOP OPERATIONAL CONTROL BAR -->
   <header class="top-bar">
     <div class="brand-section">
       <div class="brand-logo">
         <div class="logo-badge">ISL</div>
         <div class="brand-title">
           <h1>INDIA SPACE LAB</h1>
-          <span>Ground Control Software (GCS) v2.4 | CanSat Mission Ops</span>
+          <span>Ground Control Software (GCS) | CanSat Mission Operations</span>
         </div>
       </div>
     </div>
 
-    <!-- Operations Controls -->
+    <!-- Actions Cluster -->
     <div class="controls-cluster">
       <div class="btn-group">
         <button id="btn-start-telemetry" class="btn btn-success">
@@ -54,16 +54,16 @@
       </div>
 
       <div class="btn-group">
-        <button id="btn-sync-time" class="btn btn-secondary" title="Sync GCS Time with PC Clock">
+        <button id="btn-sync-time" class="btn btn-secondary">
           <i data-lucide="clock"></i> Sync Time
         </button>
-        <button id="btn-reset-packet" class="btn btn-secondary" title="Reset Telemetry Packet Counter">
+        <button id="btn-reset-packet" class="btn btn-secondary">
           <i data-lucide="rotate-ccw"></i> Reset Counter
         </button>
       </div>
     </div>
 
-    <!-- HUD Status Indicators -->
+    <!-- Real-Time System Metrics HUD -->
     <div class="header-hud">
       <div class="hud-item">
         <span class="hud-label">Link Status</span>
@@ -90,63 +90,48 @@
     </div>
   </header>
 
-  <!-- ================= MAIN DASHBOARD GRID ================= -->
+  <!-- DASHBOARD GRID LAYOUT -->
   <main class="dashboard-grid">
 
-    <!-- LEFT COLUMN: CONTROLS & SIMULATION -->
+    <!-- LEFT COLUMN: COMMANDS & SIMULATION -->
     <section class="left-column">
-
-      <!-- Mission Control Panel (Command Execution) -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="shield-alert"></i> Mission Control Panel
-          </div>
+          <div class="card-title"><i data-lucide="shield-alert"></i> Mission Control Panel</div>
           <span class="status-badge">ARMED</span>
         </header>
 
         <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-          <!-- Manual Separation -->
           <button id="cmd-separation" class="control-btn btn-warning-cmd">
             <span><i data-lucide="scissors"></i> Manual Separation</span>
             <i data-lucide="chevron-right"></i>
           </button>
-
-          <!-- Emergency Parachute Deployment -->
           <button id="cmd-parachute" class="control-btn btn-danger-cmd">
             <span><i data-lucide="archive-restore"></i> Emergency Parachute</span>
             <i data-lucide="alert-triangle"></i>
           </button>
-
-          <!-- Redundant Activation -->
           <button id="cmd-redundant" class="control-btn btn-info-cmd">
             <span><i data-lucide="zap"></i> Redundant Command</span>
             <i data-lucide="radio"></i>
           </button>
         </div>
 
-        <!-- Dynamic Command Status Log -->
         <div class="card-title" style="margin-top: 0.5rem; font-size: 0.75rem;">
           <i data-lucide="terminal"></i> Command Status Log
         </div>
         <div class="command-status-log" id="command-log">
-          <div class="log-entry info">
-            <span class="time">[00:00:00]</span> GCS Mission Control Initialized. System ready.
-          </div>
+          <div class="log-entry info"><span class="time">[00:00:00]</span> GCS Engine Initialized. Ready for telemetry stream.</div>
         </div>
       </article>
 
-      <!-- Telemetry Source & Simulator Settings -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="sliders"></i> Flight Telemetry Source
-          </div>
+          <div class="card-title"><i data-lucide="sliders"></i> Flight Telemetry Source</div>
         </header>
 
         <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8rem;">
           <label style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase;">Flight Profile</label>
-          <select id="sim-profile-select" style="background: rgba(0,0,0,0.5); color: var(--text-primary); border: 1px solid var(--border-card); padding: 0.4rem; border-radius: 4px; font-family: var(--font-sans);">
+          <select id="sim-profile-select" style="background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--border-card); padding: 0.4rem; border-radius: 4px;">
             <option value="nominal">Nominal Launch & Descent Profile</option>
             <option value="high-descent">Simulate High Descent Rate Fault</option>
             <option value="gps-loss">Simulate GPS Loss / Outage</option>
@@ -154,7 +139,7 @@
             <option value="parachute-deploy">Simulate Emergency Parachute</option>
           </select>
 
-          <label style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; margin-top: 0.3rem;">Fault Injection Overrides</label>
+          <label style="color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; margin-top: 0.3rem;">Fault Overrides</label>
           <div style="display: flex; flex-direction: column; gap: 0.4rem;">
             <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
               <input type="checkbox" id="fault-descent"> High Descent Rate (>10 m/s)
@@ -169,12 +154,9 @@
         </div>
       </article>
 
-      <!-- Container & Payload Sensor Summary -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="cpu"></i> Telemetry Summary
-          </div>
+          <div class="card-title"><i data-lucide="cpu"></i> Telemetry Summary</div>
         </header>
         <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.75rem; font-family: var(--font-mono);">
           <div style="display: flex; justify-content: space-between;">
@@ -182,145 +164,54 @@
             <span id="summary-team-id" style="color: var(--accent-cyan);">ISL-CANSAT-1024</span>
           </div>
           <div style="display: flex; justify-content: space-between;">
-            <span style="color: var(--text-muted);">FLIGHT PHASE:</span>
+            <span style="color: var(--text-muted);">FLIGHT STATE:</span>
             <span id="summary-flight-state" style="color: #34d399;">PRE_LAUNCH</span>
           </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span style="color: var(--text-muted);">STREAM RATE:</span>
-            <span id="summary-stream-rate">1.0 Hz</span>
-          </div>
         </div>
       </article>
-
     </section>
 
-    <!-- MIDDLE COLUMN: TELEMETRY CARDS & REAL-TIME GRAPHS -->
+    <!-- MIDDLE COLUMN: NUMERICAL TELEMETRY & CHARTS -->
     <section class="middle-column">
-
-      <!-- Telemetry Data Cards (Container vs Payload) -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="activity"></i> Real-Time Telemetry Parameters
-          </div>
-          <span style="font-size: 0.7rem; color: var(--text-muted);">Parsed Data Stream</span>
+          <div class="card-title"><i data-lucide="activity"></i> Real-Time Telemetry Parameters</div>
         </header>
 
-        <div style="margin-bottom: 0.2rem; font-size: 0.7rem; text-transform: uppercase; color: var(--accent-cyan); letter-spacing: 0.5px;">
-          Container Telemetry
-        </div>
+        <div style="margin-bottom: 0.2rem; font-size: 0.7rem; text-transform: uppercase; color: var(--accent-cyan);">Container Telemetry</div>
         <div class="telemetry-grid">
-          <div class="telemetry-card highlight">
-            <span class="label">Container Alt</span>
-            <div class="value-container">
-              <span class="value" id="val-container-alt">0.0</span>
-              <span class="unit">m</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">Atm. Pressure</span>
-            <div class="value-container">
-              <span class="value" id="val-pressure">1013.2</span>
-              <span class="unit">hPa</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">Temperature</span>
-            <div class="value-container">
-              <span class="value" id="val-temp">24.5</span>
-              <span class="unit">°C</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">Battery Voltage</span>
-            <div class="value-container">
-              <span class="value" id="val-voltage">7.40</span>
-              <span class="unit">V</span>
-            </div>
-          </div>
+          <div class="telemetry-card highlight"><span class="label">Container Alt</span><div class="value-container"><span class="value" id="val-container-alt">0.0</span><span class="unit">m</span></div></div>
+          <div class="telemetry-card"><span class="label">Atm. Pressure</span><div class="value-container"><span class="value" id="val-pressure">1013.2</span><span class="unit">hPa</span></div></div>
+          <div class="telemetry-card"><span class="label">Temperature</span><div class="value-container"><span class="value" id="val-temp">24.5</span><span class="unit">°C</span></div></div>
+          <div class="telemetry-card"><span class="label">Battery Voltage</span><div class="value-container"><span class="value" id="val-voltage">7.40</span><span class="unit">V</span></div></div>
         </div>
 
-        <div style="margin-top: 0.4rem; margin-bottom: 0.2rem; font-size: 0.7rem; text-transform: uppercase; color: var(--accent-blue); letter-spacing: 0.5px;">
-          Payload & Navigation Telemetry
-        </div>
+        <div style="margin-top: 0.4rem; margin-bottom: 0.2rem; font-size: 0.7rem; text-transform: uppercase; color: var(--accent-blue);">Payload & Navigation Telemetry</div>
         <div class="telemetry-grid">
-          <div class="telemetry-card highlight">
-            <span class="label">Payload Alt</span>
-            <div class="value-container">
-              <span class="value" id="val-payload-alt">0.0</span>
-              <span class="unit">m</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">Descent Rate</span>
-            <div class="value-container">
-              <span class="value" id="val-descent-rate">0.0</span>
-              <span class="unit">m/s</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">GPS Satellites</span>
-            <div class="value-container">
-              <span class="value" id="val-gps-sats">9</span>
-              <span class="unit">Sats</span>
-            </div>
-          </div>
-
-          <div class="telemetry-card">
-            <span class="label">Gyro (P/R/Y)</span>
-            <div class="value-container">
-              <span class="value" id="val-gyro-pry" style="font-size: 0.85rem;">0°/0°/0°</span>
-            </div>
-          </div>
+          <div class="telemetry-card highlight"><span class="label">Payload Alt</span><div class="value-container"><span class="value" id="val-payload-alt">0.0</span><span class="unit">m</span></div></div>
+          <div class="telemetry-card"><span class="label">Descent Rate</span><div class="value-container"><span class="value" id="val-descent-rate">0.0</span><span class="unit">m/s</span></div></div>
+          <div class="telemetry-card"><span class="label">GPS Satellites</span><div class="value-container"><span class="value" id="val-gps-sats">9</span><span class="unit">Sats</span></div></div>
+          <div class="telemetry-card"><span class="label">Gyro (P/R/Y)</span><div class="value-container"><span class="value" id="val-gyro-pry" style="font-size: 0.85rem;">0°/0°/0°</span></div></div>
         </div>
       </article>
 
-      <!-- Real-Time Graphs (Chart.js Panel) -->
       <article class="card" id="card-graphs">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="line-chart"></i> Real-Time Telemetry Graphs
-          </div>
-          <span style="font-size: 0.7rem; color: var(--text-muted);">Continuously Updating Charts</span>
+          <div class="card-title"><i data-lucide="line-chart"></i> Real-Time Telemetry Graphs</div>
         </header>
 
         <div class="charts-grid">
-          <!-- Graph 1: Altitude -->
-          <div class="chart-container">
-            <canvas id="chart-altitude"></canvas>
-          </div>
-          <!-- Graph 2: Atmospheric Pressure -->
-          <div class="chart-container">
-            <canvas id="chart-pressure"></canvas>
-          </div>
-          <!-- Graph 3: Temperature -->
-          <div class="chart-container">
-            <canvas id="chart-temperature"></canvas>
-          </div>
-          <!-- Graph 4: Descent Rate -->
-          <div class="chart-container">
-            <canvas id="chart-descent-rate"></canvas>
-          </div>
+          <div class="chart-container"><canvas id="chart-altitude"></canvas></div>
+          <div class="chart-container"><canvas id="chart-pressure"></canvas></div>
+          <div class="chart-container"><canvas id="chart-temperature"></canvas></div>
+          <div class="chart-container"><canvas id="chart-descent-rate"></canvas></div>
         </div>
-
-        <!-- Single Graph 5: Battery Voltage Full Width -->
-        <div class="chart-container" style="height: 140px; margin-top: 0.5rem;">
-          <canvas id="chart-voltage"></canvas>
-        </div>
+        <div class="chart-container" style="height: 140px; margin-top: 0.5rem;"><canvas id="chart-voltage"></canvas></div>
       </article>
 
-      <!-- Telemetry Log Data Table -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="database"></i> Mission Data Telemetry Log
-          </div>
-          <span style="font-size: 0.7rem; color: var(--text-muted);" id="log-count-text">0 Packets Logged</span>
+          <div class="card-title"><i data-lucide="database"></i> Mission Data Telemetry Log</div>
         </header>
 
         <div class="table-container">
@@ -338,80 +229,42 @@
                 <th>Error Code</th>
               </tr>
             </thead>
-            <tbody id="telemetry-table-body">
-              <!-- Dynamically populated via JS -->
-            </tbody>
+            <tbody id="telemetry-table-body"></tbody>
           </table>
         </div>
       </article>
-
     </section>
 
-    <!-- RIGHT COLUMN: ERROR SYSTEM, MAP, 3D ORIENTATION & VIDEO -->
+    <!-- RIGHT COLUMN: FAULT DIAGNOSTICS & VISUALIZATIONS -->
     <section class="right-column">
-
-      <!-- 4-Digit Error Code Monitoring System -->
       <article class="card error-code-banner">
-        <header class="card-header" style="border: none; padding-bottom: 0;">
-          <div class="card-title" style="color: var(--text-primary);">
-            <i data-lucide="alert-octagon"></i> 4-Digit Mission Fault System
-          </div>
+        <header class="card-header">
+          <div class="card-title"><i data-lucide="alert-octagon"></i> 4-Digit Mission Fault System</div>
           <span class="status-badge" id="error-badge-status">0000 OK</span>
         </header>
 
         <div class="error-code-digits">
-          <div class="digit-box" id="digit-box-1">
-            <span id="digit-val-1">0</span>
-            <span class="digit-sub">RATE</span>
-          </div>
-          <div class="digit-box" id="digit-box-2">
-            <span id="digit-val-2">0</span>
-            <span class="digit-sub">GPS</span>
-          </div>
-          <div class="digit-box" id="digit-box-3">
-            <span id="digit-val-3">0</span>
-            <span class="digit-sub">SEP</span>
-          </div>
-          <div class="digit-box" id="digit-box-4">
-            <span id="digit-val-4">0</span>
-            <span class="digit-sub">CHUTE</span>
-          </div>
+          <div class="digit-box" id="digit-box-1"><span id="digit-val-1">0</span><span class="digit-sub">RATE</span></div>
+          <div class="digit-box" id="digit-box-2"><span id="digit-val-2">0</span><span class="digit-sub">GPS</span></div>
+          <div class="digit-box" id="digit-box-3"><span id="digit-val-3">0</span><span class="digit-sub">SEP</span></div>
+          <div class="digit-box" id="digit-box-4"><span id="digit-val-4">0</span><span class="digit-sub">CHUTE</span></div>
         </div>
 
         <div class="error-breakdown">
-          <div class="error-item ok" id="err-desc-1">
-            <span>Digit 1: Descent Rate</span>
-            <strong id="err-text-1">0 (8–10 m/s Safe)</strong>
-          </div>
-          <div class="error-item ok" id="err-desc-2">
-            <span>Digit 2: GPS Availability</span>
-            <strong id="err-text-2">0 (GPS OK)</strong>
-          </div>
-          <div class="error-item ok" id="err-desc-3">
-            <span>Digit 3: Payload Separation</span>
-            <strong id="err-text-3">0 (Separated OK)</strong>
-          </div>
-          <div class="error-item ok" id="err-desc-4">
-            <span>Digit 4: Parachute System</span>
-            <strong id="err-text-4">0 (Inactive)</strong>
-          </div>
+          <div class="error-item ok" id="err-desc-1"><span>Digit 1: Descent Rate</span><strong id="err-text-1">0 (8–10 m/s Safe)</strong></div>
+          <div class="error-item ok" id="err-desc-2"><span>Digit 2: GPS Availability</span><strong id="err-text-2">0 (GPS OK)</strong></div>
+          <div class="error-item ok" id="err-desc-3"><span>Digit 3: Payload Separation</span><strong id="err-text-3">0 (Separated OK)</strong></div>
+          <div class="error-item ok" id="err-desc-4"><span>Digit 4: Parachute System</span><strong id="err-text-4">0 (Inactive)</strong></div>
         </div>
       </article>
 
-      <!-- 3D CanSat Orientation & Artificial Horizon (PFD) -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="compass"></i> 3D Orientation & PFD Horizon
-          </div>
-          <span style="font-size: 0.7rem; color: var(--text-muted);" id="orientation-vals">P:0° R:0° Y:0°</span>
+          <div class="card-title"><i data-lucide="compass"></i> 3D Orientation & PFD Horizon</div>
         </header>
 
         <div class="orientation-container">
-          <!-- Three.js Canvas -->
           <div id="canvas-3d"></div>
-
-          <!-- Artificial Horizon Instrument -->
           <div class="pfd-horizon">
             <div class="pfd-sky" id="pfd-sky"></div>
             <div class="pfd-pitch-scale"></div>
@@ -420,29 +273,19 @@
         </div>
       </article>
 
-      <!-- GPS Live Tracking Map -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="map-pin"></i> GPS Live Trajectory Tracking
-          </div>
-          <span style="font-size: 0.7rem; color: var(--text-muted);" id="map-coords">Lat: --.----, Lng: --.----</span>
+          <div class="card-title"><i data-lucide="map-pin"></i> GPS Live Trajectory Tracking</div>
         </header>
-
         <div id="leaflet-map"></div>
       </article>
 
-      <!-- Live Video Stream -->
       <article class="card">
         <header class="card-header">
-          <div class="card-title">
-            <i data-lucide="video"></i> Live Mission Camera Stream
-          </div>
-          <div style="display: flex; gap: 0.3rem;">
-            <button id="btn-toggle-video" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">
-              <i data-lucide="camera"></i> Start Cam
-            </button>
-          </div>
+          <div class="card-title"><i data-lucide="video"></i> Live Mission Camera Stream</div>
+          <button id="btn-toggle-video" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">
+            <i data-lucide="camera"></i> Start Cam
+          </button>
         </header>
 
         <div class="video-stream-container">
@@ -450,28 +293,23 @@
           <div class="video-hud-overlay">
             <div style="display: flex; justify-content: space-between; font-size: 0.65rem; font-family: var(--font-mono); color: var(--accent-cyan);">
               <span>CAM 01 - PAYLOAD</span>
-              <span id="video-fps">FPS: --</span>
+              <span id="video-fps">FPS: 30</span>
             </div>
             <div class="crosshair"></div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.65rem; font-family: var(--font-mono); color: var(--text-muted);">
-              <span>REC: OFF</span>
-              <span>1080p HUD</span>
-            </div>
           </div>
         </div>
       </article>
-
     </section>
   </main>
 
-  <!-- ================= SAFETY CONFIRMATION MODAL ================= -->
+  <!-- SAFETY CONFIRMATION MODAL -->
   <div class="modal-overlay" id="safety-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modal-title">CRITICAL MISSION COMMAND</h3>
+        <h3>CRITICAL MISSION COMMAND</h3>
       </div>
-      <p id="modal-desc" style="font-size: 0.85rem; color: var(--text-secondary);">
-        Are you sure you want to execute emergency parachute deployment? This operation is irreversible.
+      <p style="font-size: 0.85rem; color: var(--text-secondary);">
+        Are you sure you want to execute emergency parachute deployment? Operation is irreversible.
       </p>
       <div class="modal-actions">
         <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
@@ -480,20 +318,8 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/simulator.js"></script>
-  <script src="js/serial.js"></script>
-  <script src="js/telemetry.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/orientation.js"></script>
-  <script src="js/video.js"></script>
-  <script src="js/exporter.js"></script>
-  <script src="js/controls.js"></script>
-  <script src="js/app.js"></script>
-  
-  <script>
-    lucide.createIcons();
-  </script>
+  <!-- Modular Application Entry -->
+  <script type="module" src="src/js/main.js"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>
